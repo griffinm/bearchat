@@ -1,4 +1,4 @@
-import { Login } from "../components/login/Login";
+import { Login } from "../pages/login/Login";
 
 interface PageUrl {
   regex: RegExp;
@@ -15,3 +15,5 @@ export const urls:PageUrl[] = [
     component: Login
   }
 ]
+
+export const defaultPage = urls[0];

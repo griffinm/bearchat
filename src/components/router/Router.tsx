@@ -1,32 +1,13 @@
-import { useEffect, useState } from "react";
-import { urls } from "../../utils/urls";
+import {  useState } from "react";
+import { Login } from "../../pages/login";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-export function Router() {
-  const [currentComponent, setCurrentComponent] = useState<JSX.Element | undefined>();
-  const [path, setPath] = useState(window.location.pathname);
-
-  const listenToPopstate = () => {
-    const winPath = window.location.pathname;
-    setPath(winPath);    
-  }
-
-  useEffect(() => {
-    window.addEventListener("popstate", listenToPopstate);
-    return () => {
-      window.removeEventListener("popstate", listenToPopstate);
-    }
-  }, [])
-  
-  useEffect(() => {
-    const url = urls.find(url => url.regex.test(path));
-    if (url) {
-      setCurrentComponent(url.component());
-    }
-  }, [path])
-
+export const Router = () => {
   return (
-    <>
-      {currentComponent}
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
