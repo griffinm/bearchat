@@ -22,7 +22,6 @@ export function Layout() {
   const {
     user,
     setUser,
-    loading,
     setLoading,
   } = useUser();
   const [mobileOpen, setMobileOpen] = useState(false);

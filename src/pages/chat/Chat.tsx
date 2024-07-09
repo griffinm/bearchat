@@ -33,7 +33,7 @@ export function Chat() {
         setMessages([...messages, newMessage])
       }
     }
-  }, [newMessage])
+  }, [newMessage, currentConversation, messages])
 
   useEffect(() => {
     setLoading(true)
@@ -54,7 +54,7 @@ export function Chat() {
     fetchMessages(currentConversation.id).then((response) => {
       setMessages(response.data);
     })
-  }, [currentConversation])
+  }, [currentConversation, setCurrentConversationId])
 
   const handleNewMessage = (message: string) => {
     if (!currentConversation) {

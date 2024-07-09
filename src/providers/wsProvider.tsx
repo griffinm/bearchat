@@ -1,6 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { createConsumer } from "@rails/actioncable";
 import { Message } from "../utils/types";
+import { wsChannelName, wsUrl } from "../utils/constants";
+
 
 interface Props {
   children: React.ReactNode;
@@ -26,24 +28,24 @@ export function WSProvider({
   const [connected, setConnected] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState<Message | undefined>(undefined);
 
-  const url = "ws://localhost:3001/ws";
-  const consumer = createConsumer(url);
+  const url = wsUrl;
+  const consumer = useMemo(() => {
+    return createConsumer(url);
+  }, [url]);
 
   useEffect(() => {
     setConnected(false);
     if (!currentConversationId) return;
     
-    consumer.subscriptions.create({ channel: "ChatChannel" }, {
+    consumer.subscriptions.create({ channel: wsChannelName}, {
       connected() {
-        console.log("connected")
         setConnected(true);
       },
       received(data: Message) {
-        console.log("received", data)
         setNewMessage(data);
       },
     })
-  }, [currentConversationId]);
+  }, [currentConversationId, consumer]);
 
   return (
     <WSContext.Provider value={{
