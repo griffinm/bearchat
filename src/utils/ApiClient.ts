@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { CreateSessionResponse } from './types';
 
-const baseURL = 'http://localhost:3333';
+const baseURL = 'http://localhost:3001';
 
 const apiClient = axios.create({
   baseURL: baseURL,

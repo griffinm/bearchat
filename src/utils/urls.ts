@@ -1,19 +1,20 @@
-import { Login } from "../pages/login/Login";
-
 interface PageUrl {
-  regex: RegExp;
-  url: () => string;
-  name: string;
-  component: () => JSX.Element;
+  [key: string]: {
+    regex: RegExp;
+    url: () => string;
+    name: string;
+  }
 }
 
-export const urls:PageUrl[] = [
-  {
+export const urls:PageUrl = {
+  login: {
     name: "Login",
     regex: /\/login/,
     url: () => '/login',
-    component: Login
+  },
+  chat: {
+    name: "Chat",
+    regex: /\/chat/,
+    url: () => '/chat',
   }
-]
-
-export const defaultPage = urls[0];
+}

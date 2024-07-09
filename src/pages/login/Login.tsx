@@ -5,12 +5,15 @@ import { createSession } from '../../utils/ApiClient'
 import { Error } from '../../components/error'
 import { setToken } from '../../utils/LocalStorage'
 import { useUser } from '../../providers/UserProvider'
+import { useNavigate } from 'react-router-dom';
+import { urls } from '../../utils/urls'
 
 export const Login = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<string>('');
   const { setUser } = useUser();
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     if (!email || !password) {
@@ -21,11 +24,13 @@ export const Login = () => {
 
     createSession(email, password)
       .then((response) => {
-        const token = response.data.token.value
+        const token = response.data.token
         setToken(token)
         
         const user = response.data.user
         setUser(user);
+
+        navigate(urls.chat.url())
       })
       .catch(() => {
         setError("Invalid email or password")
