@@ -5,12 +5,35 @@ import { LoadingSpinner } from "../../components/loading-spinner/LoadingSpinner"
 import { NewMessage } from "./components/NewMessage";
 import { Messages } from "./components/Messages";
 import { useUser } from "../../providers/UserProvider";
+import { useWS } from "../../providers/wsProvider";
 
 export function Chat() {
   const [loading, setLoading] = useState(false);
+  const [ready, setReady] = useState(false);
   const [currentConversation, setCurrentConversation] = useState<Conversation>();
   const [messages, setMessages] = useState<Message[]>([]);
   const { user } = useUser()
+  const {
+    newMessage,
+    connected,
+    setCurrentConversationId,
+  } = useWS()
+
+  useEffect(() => {
+    if (connected && !loading && currentConversation && !ready) {
+      setReady(true);
+    }
+  }, [connected, loading, currentConversation, ready])
+
+  useEffect(() => {
+    if (newMessage && currentConversation && newMessage.conversationId === currentConversation.id) {
+      // Add this message if it is not already added
+      const found = messages.find((message) => message.id === newMessage.id);
+      if (!found) {
+        setMessages([...messages, newMessage])
+      }
+    }
+  }, [newMessage])
 
   useEffect(() => {
     setLoading(true)
@@ -26,6 +49,8 @@ export function Chat() {
       return
     }
 
+    setCurrentConversationId(currentConversation.id);
+
     fetchMessages(currentConversation.id).then((response) => {
       setMessages(response.data);
     })
@@ -35,14 +60,15 @@ export function Chat() {
     if (!currentConversation) {
       return
     }
-
+    
     createMessage(message, currentConversation.id).then((response) => {
       const message = response.data;
       console.log(message)
+      setMessages([...messages, message])
     })
   }
 
-  if (loading || !currentConversation) {
+  if (!ready) {
     return <LoadingSpinner />
   }
 
@@ -51,7 +77,7 @@ export function Chat() {
       <div className="grow">
         <Messages
           messages={messages}
-          participants={currentConversation.users}
+          participants={currentConversation!.users}
           currentUser={user!}
         />
       </div>
