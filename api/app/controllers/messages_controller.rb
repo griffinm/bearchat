@@ -7,12 +7,10 @@ class MessagesController < ApplicationController
     content = message_params[:content]
     user = current_user
 
-    message = conversation.messages.create(
+    @message = conversation.messages.create(
       content: content,
       user: user,
     )
-
-    render json: message, status: :created
   end
 
   # GET /conversations/:conversation_id/messages
