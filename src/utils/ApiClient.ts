@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { CreateSessionResponse, User } from './types';
+import { 
+  Conversation, 
+  Message, 
+  User,
+} from './types';
 import { getToken } from './LocalStorage';
 
 const baseURL = 'http://localhost:3001';
@@ -22,11 +26,10 @@ apiClient.interceptors.response.use((response) => response, (error) => {
   }
 });
 
-
 export const createSession = async (
   email: string, 
   password: string
-): Promise<AxiosResponse<CreateSessionResponse>> => {
+): Promise<AxiosResponse<{ token: string, user: User }>> => {
   return await apiClient.post('/sessions.json', {
     email,
     password,
@@ -35,4 +38,28 @@ export const createSession = async (
 
 export const fetchCurrentUser = async (): Promise<AxiosResponse<User>> => {
   return await apiClient.get('/current_user.json');
+}
+
+export const fetchConversations = async (): Promise<AxiosResponse<Conversation[]>> => {
+  return await apiClient.get('/conversations.json');
+}
+
+export const createMessage = async (
+  message: string,
+  conversationId: number,
+): Promise<AxiosResponse<Message>> => {
+  // If there is a newline char at thje end of the message, remove it
+  const trimmedMessage = message.replace(/\n$/, '');
+
+  return await apiClient.post(`/conversations/${conversationId}/messages.json`, {
+    message: {
+      content: trimmedMessage,
+    },
+  });
+}
+
+export const fetchMessages = async (
+  conversationId: number,
+): Promise<AxiosResponse<Message[]>> => {
+  return await apiClient.get(`/conversations/${conversationId}/messages.json`);
 }

@@ -118,7 +118,7 @@ export function Layout() {
           {drawer}
         </Drawer>
       </nav>
-      <div className='mt-[70px] p-2'>
+      <div className='pt-[70px] p-2'>
         <Outlet />
       </div>
     </div>

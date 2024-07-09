@@ -3,4 +3,7 @@ Rails.application.routes.draw do
 
   resources :sessions, only: %i[create]
   get "/current_user" => "users#show"
+  resources :conversations, only: %i[index] do
+    resources :messages, only: %i[index create]
+  end
 end
