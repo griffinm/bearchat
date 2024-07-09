@@ -19,12 +19,14 @@ export function Chat() {
     setCurrentConversationId,
   } = useWS()
 
+  // Check all conditions to make sure chat is ready
   useEffect(() => {
     if (connected && !loading && currentConversation && !ready) {
       setReady(true);
     }
   }, [connected, loading, currentConversation, ready])
 
+  // Receive and append new messages to collection
   useEffect(() => {
     if (newMessage && currentConversation && newMessage.conversationId === currentConversation.id) {
       // Add this message if it is not already added
@@ -35,6 +37,7 @@ export function Chat() {
     }
   }, [newMessage, currentConversation, messages])
 
+  // Initial load of conversations
   useEffect(() => {
     setLoading(true)
     fetchConversations().then((response) => {
@@ -44,6 +47,7 @@ export function Chat() {
     })
   }, [])
 
+  // Initial load of messages
   useEffect(() => {
     if (!currentConversation) {
       return
