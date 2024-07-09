@@ -12,7 +12,7 @@ export const Login = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<string>('');
-  const { setUser } = useUser();
+  const { setUser, setLoading } = useUser();
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -21,6 +21,7 @@ export const Login = () => {
     }
 
     setError('')
+    setLoading(true)
 
     createSession(email, password)
       .then((response) => {
@@ -29,11 +30,13 @@ export const Login = () => {
         
         const user = response.data.user
         setUser(user);
-
-        navigate(urls.chat.url())
+        
+        navigate(urls.messages.url())
+        setLoading(false)
       })
       .catch(() => {
         setError("Invalid email or password")
+        setLoading(false)
       }
     )
   }

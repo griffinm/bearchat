@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '../utils/types';
 import { getToken } from '../utils/LocalStorage';
 
-
 interface Props {
   children: React.ReactNode;
 }
@@ -11,6 +10,7 @@ interface UserContextProps {
   user?: User,
   token?: string,
   loading: boolean,
+  setLoading: (loading: boolean) => void,
   setToken?: (token: string) => void,
   setUser: (user: User) => void,
 }
@@ -19,6 +19,7 @@ export const UserContext = createContext<UserContextProps>({
   user: undefined,
   loading: false,
   setUser: () => {},
+  setLoading: () => {},
 });
 
 export function UserProvider({
@@ -45,6 +46,7 @@ export function UserProvider({
     <UserContext.Provider value={{
       user,
       loading,
+      setLoading,
       token,
       setToken: handleSetToken,
       setUser,

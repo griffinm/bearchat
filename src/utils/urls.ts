@@ -12,9 +12,9 @@ export const urls:PageUrl = {
     regex: /\/login/,
     url: () => '/login',
   },
-  chat: {
-    name: "Chat",
-    regex: /\/chat/,
-    url: () => '/chat',
+  messages: {
+    name: "Messages",
+    regex: /\/messages/,
+    url: () => '/messages',
   }
 }
