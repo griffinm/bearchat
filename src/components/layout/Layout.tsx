@@ -58,12 +58,14 @@ export function Layout() {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item.title} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              {item.icon}
-              <ListItemText primary={item.title} />
-            </ListItemButton>
-          </ListItem>
+          <Link to={item.link} key={item.title}>
+            <ListItem key={item.title} disablePadding>
+              <ListItemButton sx={{ textAlign: 'center' }}>
+                {item.icon}
+                <ListItemText primary={item.title} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         ))}
       </List>
     </Box>

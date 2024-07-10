@@ -1,6 +1,5 @@
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 
 interface Props {

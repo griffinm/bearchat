@@ -32,7 +32,7 @@ export function NewMessage({
       <div className="flex">
         <div className="pr-3 grow">
           <textarea
-            className="w-full h-full resize-none"
+            className="w-full h-full resize-none p-2"
             placeholder="New Message"
             value={newMessage}
             onKeyUp={onMessageKeyUp}

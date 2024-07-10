@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Note } from "../../utils/types";
-import { Button, Input, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Editor from 'react-simple-wysiwyg';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Confirmation } from "../confirmation/Confirmation";

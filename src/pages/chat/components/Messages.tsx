@@ -43,7 +43,7 @@ export function Messages({
 
   return (
     <div className="grow flex justify-center">
-      <div className="flex flex-col-reverse grow p-5 max-w-[700px] [overflow-anchor:auto] overflow-auto h-svh pb-[180px]">
+      <div className="flex grow flex-col-reverse p-5 max-w-[700px] [overflow-anchor:auto] overflow-scroll pb-[130px]">
         {sortedMessages.map((message) => renderMessage(message) )}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { createMessage, fetchConversations, fetchMessages } from "../../utils/ApiClient";
 import { Conversation, Message } from "../../utils/types";
 import { LoadingSpinner } from "../../components/loading-spinner/LoadingSpinner";
@@ -18,11 +18,13 @@ export function Chat() {
     connected,
     setCurrentConversationId,
   } = useWS()
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Check all conditions to make sure chat is ready
   useEffect(() => {
     if (connected && !loading && currentConversation && !ready) {
       setReady(true);
+      scrollToBottom()
     }
   }, [connected, loading, currentConversation, ready])
 
@@ -33,6 +35,7 @@ export function Chat() {
       const found = messages.find((message) => message.id === newMessage.id);
       if (!found) {
         setMessages([...messages, newMessage])
+        scrollToBottom()
       }
     }
   }, [newMessage, currentConversation, messages])
@@ -57,8 +60,15 @@ export function Chat() {
 
     fetchMessages(currentConversation.id).then((response) => {
       setMessages(response.data);
+      scrollToBottom()
     })
   }, [currentConversation, setCurrentConversationId])
+
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }, 300)
+  }
 
   const handleNewMessage = (message: string) => {
     if (!currentConversation) {
@@ -67,8 +77,8 @@ export function Chat() {
     
     createMessage(message, currentConversation.id).then((response) => {
       const message = response.data;
-      console.log(message)
       setMessages([...messages, message])
+      scrollToBottom()
     })
   }
 
@@ -78,20 +88,20 @@ export function Chat() {
 
   return (
     <div className="flex flex-col">
-      <div className="absolute top-[70px] right-0 left-0 bottom-[120px] bg-white">
+      <div className="">
         <Messages
           messages={messages}
           participants={currentConversation!.users}
           currentUser={user!}
         />
+        <div ref={messagesEndRef} />
       </div>
-      <div className="absolute right-0 left-0 bottom-0 h-[120px] md:text-center">
-        <div className="grow flex justify-center">
-          <div className="grow p-5 max-w-[700px]">
-            <NewMessage onSend={handleNewMessage} />
-          </div>
+      <div className="flex justify-center fixed bottom-0 right-0 left-0 h-[140px] bg-white">
+        <div className="grow p-5 max-w-[700px]">
+          <NewMessage onSend={handleNewMessage} />
         </div>
       </div>
+
     </div>
   )
 }
