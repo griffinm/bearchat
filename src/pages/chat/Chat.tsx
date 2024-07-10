@@ -77,16 +77,20 @@ export function Chat() {
   }
 
   return (
-    <div className="flex flex-col absolute top-[70px] right-0 left-0 bottom-0">
-      <div className="grow">
+    <div className="flex flex-col">
+      <div className="absolute top-[70px] right-0 left-0 bottom-[120px] bg-white">
         <Messages
           messages={messages}
           participants={currentConversation!.users}
           currentUser={user!}
         />
       </div>
-      <div className="">
-        <NewMessage onSend={handleNewMessage} />
+      <div className="absolute right-0 left-0 bottom-0 h-[120px] md:text-center">
+        <div className="grow flex justify-center">
+          <div className="grow p-5 max-w-[700px]">
+            <NewMessage onSend={handleNewMessage} />
+          </div>
+        </div>
       </div>
     </div>
   )

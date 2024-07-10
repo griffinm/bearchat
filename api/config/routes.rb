@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   mount ActionCable.server => '/ws'
 
+  get "/health" => "health#show"
+
   resources :sessions, only: %i[create]
   get "/current_user" => "users#show"
   resources :conversations, only: %i[index] do

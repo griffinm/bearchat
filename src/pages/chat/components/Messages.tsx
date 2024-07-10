@@ -15,7 +15,7 @@ export function Messages({
 }: Props) {
   const sortedMessages = useMemo(() => {
     return messages.sort((a, b) => {
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
   }, [messages])
 
@@ -43,7 +43,7 @@ export function Messages({
 
   return (
     <div className="grow flex justify-center">
-      <div className="grow p-5 max-w-[700px]">
+      <div className="flex flex-col-reverse grow p-5 max-w-[700px] [overflow-anchor:auto] overflow-auto h-svh pb-[180px]">
         {sortedMessages.map((message) => renderMessage(message) )}
       </div>
     </div>
