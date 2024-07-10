@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { 
   Conversation, 
   Message, 
+  Note, 
   User,
 } from './types';
 import { getToken } from './LocalStorage';
@@ -63,4 +64,31 @@ export const fetchMessages = async (
   conversationId: number,
 ): Promise<AxiosResponse<Message[]>> => {
   return await apiClient.get(`/conversations/${conversationId}/messages.json`);
+}
+
+export const fetchNotes = async (): Promise<AxiosResponse<Note[]>> => {
+  return await apiClient.get('/notes.json');
+}
+
+export const fetchNote = async(id: string): Promise<AxiosResponse<Note>> => {
+  return apiClient.get(`/notes/${id}.json`);
+}
+
+export const createNote = async (): Promise<AxiosResponse<Note>> => {
+  return await apiClient.post('/notes.json');
+}
+
+export const updateNote = (note: Note): Promise<AxiosResponse<Note>> => {
+  const params = {
+    note: {
+      title: note.title,
+      content: note.content,
+    }
+  }
+
+  return apiClient.put(`/notes/${note.id}.json`, { note: params.note });
+}
+
+export const deleteNote = (note: Note): Promise<AxiosResponse> => {
+  return apiClient.delete(`/notes/${note.id}.json`);
 }

@@ -7,13 +7,19 @@ import MenuIcon from '@mui/icons-material/Menu';
 import PersonIcon from '@mui/icons-material/Person';
 import MessageIcon from '@mui/icons-material/Message';
 import { urls } from '../../utils/urls';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 const navItems = [
   {
     title: 'Messages',
     icon: <MessageIcon />,
     link: urls.messages.url(),
-  }
+  },
+  {
+    title: 'Notes',
+    icon: <EditNoteIcon />,
+    link: urls.notes.url(),
+  },
 ]
 
 const drawerWidth = 240;
@@ -85,7 +91,7 @@ export function Layout() {
           </Typography>
           <Box sx={{flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
-              <Link to={item.link} key={item.title}>
+              <Link to={item.link} key={item.title} className="mr-6">
                 <Button key={item.title} sx={{ color: '#fff' }} startIcon={item.icon}>
                   {item.title}
                 </Button>

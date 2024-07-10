@@ -15,3 +15,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.rsw-ce ul {
+  list-style: disc;
+  padding-left: 2em;
+}
+
+.rsw-ce ol {
+  list-style: decimal;
+  padding-left: 2em;
+}
+
+.rsw-editor {
+  height: 100%;
+}
+
+.rsw-ce {
+  font-size: 18px;
+
+  h1 {
+    font-size: 30px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+}

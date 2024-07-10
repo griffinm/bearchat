@@ -1,0 +1,1 @@
+json.partial! 'note', as: :note, note: @note
