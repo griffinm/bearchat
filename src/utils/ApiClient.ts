@@ -5,8 +5,9 @@ import {
   User,
 } from './types';
 import { getToken } from './LocalStorage';
+import { apiUrl } from './constants';
 
-const baseURL = 'http://localhost:3001';
+const baseURL = apiUrl;
 
 const apiClient = axios.create({
   baseURL: baseURL,
