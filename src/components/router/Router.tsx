@@ -1,6 +1,6 @@
 import { Login } from "../../pages/login";
 import { Chat } from "../../pages/chat";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { urls } from "../../utils/urls";
 import { Layout } from "../layout";
 import { Notes } from "../../pages/notes/Notes";
@@ -10,6 +10,7 @@ export const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Navigate to="/messages" replace={true} />} />
         <Route path={urls.login.url()} element={<Login />} />
         
         <Route element={<Layout />}>
