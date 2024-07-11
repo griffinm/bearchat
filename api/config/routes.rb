@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :sessions, only: %i[create]
   get "/current_user" => "users#show"
-  post "/current_userr" => "users#update"
+  post "/current_user" => "users#update"
   resources :conversations, only: %i[index] do
     resources :messages, only: %i[index create]
   end
