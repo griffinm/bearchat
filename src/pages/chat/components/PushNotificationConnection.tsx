@@ -8,6 +8,7 @@ import { useUser } from "../../../providers/UserProvider";
 
 export function PushNotificationConnection() {
   const { user } = useUser();
+  PushNotifications.register();
 
   useEffect(() => {
     if (user?.id) {
