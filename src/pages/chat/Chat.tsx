@@ -6,6 +6,7 @@ import { NewMessage } from "./components/NewMessage";
 import { Messages } from "./components/Messages";
 import { useUser } from "../../providers/UserProvider";
 import { useWS } from "../../providers/wsProvider";
+const { useNavigate } = require("react-router-dom");
 
 export function Chat() {
   const [loading, setLoading] = useState(false);
@@ -19,6 +20,7 @@ export function Chat() {
     setCurrentConversationId,
   } = useWS()
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
 
   // Check all conditions to make sure chat is ready
   useEffect(() => {
@@ -47,6 +49,8 @@ export function Chat() {
       const firstConversation = response.data[0];
       setCurrentConversation(firstConversation);
       setLoading(false);
+    }).catch(() => {
+      navigate('/login')
     })
   }, [])
 
