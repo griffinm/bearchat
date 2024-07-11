@@ -23,7 +23,7 @@ apiClient.interceptors.request.use((config) => {
 });
 
 apiClient.interceptors.response.use((response) => response, (error) => {
-  if (error.status === 401) {
+  if (error.response.status === 401) {
     window.location.href = '/login';
   }
 });
