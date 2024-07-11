@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "519133751592",
+    "project_id": "bearchat-8a5a6",
+    "storage_bucket": "bearchat-8a5a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519133751592:android:d415a6da11e50fbc3f881d",
+        "android_client_info": {
+          "package_name": "com.bearchat.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf3xFqyeLQwwE4TlITrKnJkXzyzXqMqvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
