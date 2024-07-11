@@ -43,7 +43,7 @@ export function NoteForm({
         clearTimeout(saveTimeout)
       }
     }
-  }, [title, content])
+  }, [title, content, note, onSave, saveTimeout])
 
   return (
     <div className="flex flex-col grow">

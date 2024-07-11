@@ -42,6 +42,12 @@ export const fetchCurrentUser = async (): Promise<AxiosResponse<User>> => {
   return await apiClient.get('/current_user.json');
 }
 
+export const updateCurrentUser = async (fcmToken: string): Promise<AxiosResponse<User>> => {
+  return await apiClient.post('/current_user.json', {
+    user: { fcm_token: fcmToken },
+  });
+}
+
 export const fetchConversations = async (): Promise<AxiosResponse<Conversation[]>> => {
   return await apiClient.get('/conversations.json');
 }

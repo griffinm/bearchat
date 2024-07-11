@@ -3,8 +3,9 @@ Rails.application.routes.draw do
 
   get "/health" => "health#show"
 
-  resources :sessions, only: %i[create update]
+  resources :sessions, only: %i[create]
   get "/current_user" => "users#show"
+  post "/current_userr" => "users#update"
   resources :conversations, only: %i[index] do
     resources :messages, only: %i[index create]
   end

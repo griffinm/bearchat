@@ -52,7 +52,7 @@ export function Chat() {
     }).catch(() => {
       navigate('/login')
     })
-  }, [])
+  }, [navigate])
 
   // Initial load of messages
   useEffect(() => {
