@@ -13,7 +13,7 @@ class Message < ApplicationRecord
     
     # Create a push notification
     self.conversation.users.each do |user|
-      next (user.id === self.user_id)
+      next if (user.id === self.user_id)
       PushService.new.send_push(self, user)
     end
   end
