@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount ActionCable.server => '/ws'
+  mount ActionCable.server => '/ws/'
 
   get "/health" => "health#show"
 
