@@ -27,3 +27,8 @@ export interface Note {
   createdAt: Date,
   updatedAt: Date,
 }
+
+export type WsNotification = {
+  type: 'message' | 'typing',
+  data: Message | User,
+}

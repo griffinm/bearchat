@@ -1,56 +1,66 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { createConsumer } from "@rails/actioncable";
-import { Message } from "../utils/types";
+import { Message, User, WsNotification } from "../utils/types";
 import { wsChannelName, wsUrl } from "../utils/constants";
-
+import { getToken } from "../utils/LocalStorage";
+import { useUser } from "./UserProvider";
 
 interface Props {
   children: React.ReactNode;
 }
 
 interface WsProps {
-  consumer?: ActionCable.Cable;
-  setCurrentConversationId: (id: number) => void;
   connected: boolean;
   newMessage?: Message,
 }
 
 export const WSContext = createContext<WsProps>({
-  consumer: undefined,
-  setCurrentConversationId: () => {},
   connected: false,
 });
 
 export function WSProvider({ 
   children,
 }: Props) {
-  const [currentConversationId, setCurrentConversationId] = useState<number>(0);
   const [connected, setConnected] = useState<boolean>(false);
   const [newMessage, setNewMessage] = useState<Message | undefined>(undefined);
+  const [userTyping, setUserTyping] = useState<User | undefined>();
+  const userId = useUser().user?.id;
+  const [subscription, setSubscription] = useState<any>(null);
 
-  const url = wsUrl;
+  const token = encodeURIComponent(getToken());
+  const url = `${wsUrl}?token=${token}`;
   const consumer = useMemo(() => {
     return createConsumer(url);
   }, [url]);
 
   useEffect(() => {
     setConnected(false);
-    if (!currentConversationId) return;
-    
-    consumer.subscriptions.create({ channel: wsChannelName}, {
+    if (!userId) {
+      return;
+    }
+    console.log("going this")
+    const newSubscription = consumer.subscriptions.create({ channel: wsChannelName }, {
       connected() {
         setConnected(true);
       },
-      received(data: Message) {
-        setNewMessage(data);
+      received(data: WsNotification) {
+        console.log(data)
+        if (data.type === 'message') {
+          setNewMessage(data.data as Message);
+        }
+
+        if (data.type === 'typing') {
+          // Do something with typing notification
+          setUserTyping(data.data as User);
+        }
       },
     })
-  }, [currentConversationId, consumer]);
+
+    setSubscription(newSubscription);
+  }, [userId]);
 
   return (
     <WSContext.Provider value={{
-      consumer,
-      setCurrentConversationId,
       connected,
       newMessage,
     }}>

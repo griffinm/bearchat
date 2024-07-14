@@ -17,14 +17,13 @@ export function Chat() {
   const {
     newMessage,
     connected,
-    setCurrentConversationId,
   } = useWS()
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
-
+  
   // Check all conditions to make sure chat is ready
   useEffect(() => {
-    if (connected && !loading && currentConversation && !ready) {
+    if (!loading && currentConversation && !ready) {
       setReady(true);
       scrollToBottom()
     }
@@ -60,13 +59,11 @@ export function Chat() {
       return
     }
 
-    setCurrentConversationId(currentConversation.id);
-
     fetchMessages(currentConversation.id).then((response) => {
       setMessages(response.data);
       scrollToBottom()
     })
-  }, [currentConversation, setCurrentConversationId])
+  }, [currentConversation])
 
   const scrollToBottom = () => {
     setTimeout(() => {
