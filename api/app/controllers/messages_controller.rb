@@ -19,7 +19,20 @@ class MessagesController < ApplicationController
     @messages = conversation.messages
   end
 
+  # PATCH /conversations/:conversation_id/messages/:id
+  def update
+    if (message_params[:read_at])
+      conversation = current_user.active_conversation
+      message = conversation.messages.find(params[:id])
+      MarkAsReadService.new.mark_as_read(
+        conversation: conversation, 
+        message: message, 
+        user: current_user
+      )
+    end
+  end
+
   private def message_params
-    params.require(:message).permit(:content)
+    params.require(:message).permit(:content, :read_at)
   end
 end

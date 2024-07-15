@@ -7,4 +7,9 @@ class User < ApplicationRecord
   has_many :notes
 
   validates :email, presence: true, uniqueness: true
+
+  def active_conversation
+    conversations.first
+  end
 end
+

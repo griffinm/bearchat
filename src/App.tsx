@@ -10,6 +10,7 @@ import { PushNotifications } from '@capacitor/push-notifications';
 import { useEffect } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { PushNotificationConnection } from './pages/chat/components/PushNotificationConnection';
+import { MessageProvider } from './providers/messageProvider';
 
 function App() {
   // Push notifications
@@ -24,7 +25,9 @@ function App() {
     <UserProvider>
       {isPushNotificationsAvailable && <PushNotificationConnection />}
       <WSProvider>
-        <Router />
+        <MessageProvider>
+          <Router />
+        </MessageProvider>
       </WSProvider>
     </UserProvider>
   );

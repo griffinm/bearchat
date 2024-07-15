@@ -1,23 +1,34 @@
-import { useMemo } from "react"
-import { Message, User } from "../../../utils/types"
+import { useEffect, useMemo } from "react"
+import { Conversation, Message, User } from "../../../utils/types"
 import { MessageItem } from "./MessageItem"
+import { markMessageAsRead } from "../../../utils/ApiClient"
 
 interface Props {
   messages: Message[],
   participants: User[],
   currentUser: User,
+  conversation: Conversation,
 }
 
 export function Messages({
   messages,
   participants,
   currentUser,
+  conversation,
 }: Props) {
   const sortedMessages = useMemo(() => {
     return messages.sort((a, b) => {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
   }, [messages])
+
+  // Mark all messages as read on the initial load
+  useEffect(() => {
+    const lastMessage = sortedMessages[sortedMessages.length - 1]
+    if (lastMessage) {
+      markMessageAsRead(lastMessage.id, conversation.id)
+    }
+  }, [sortedMessages])
 
   const renderMessage = (message: Message) => {
     let isLastOfSender = false

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get "/current_user" => "users#show"
   post "/current_user" => "users#update"
   resources :conversations, only: %i[index] do
-    resources :messages, only: %i[index create]
+    resources :messages, only: %i[index create update]
   end
   resources :notes, only: %i[index create update destroy show]
 end

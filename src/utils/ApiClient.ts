@@ -98,3 +98,19 @@ export const updateNote = (note: Note): Promise<AxiosResponse<Note>> => {
 export const deleteNote = (note: Note): Promise<AxiosResponse> => {
   return apiClient.delete(`/notes/${note.id}.json`);
 }
+
+export const markMessageAsRead = async (
+  messageId: number, 
+  conversationId: number
+): Promise<AxiosResponse> => {
+  const data = {
+    message: {
+      read_at: new Date(),
+    }
+  }
+
+  return await apiClient.patch(
+    `conversations/${conversationId}/messages/${messageId}.json`,
+    data,
+  )
+}

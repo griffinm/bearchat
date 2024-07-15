@@ -11,6 +11,7 @@ export interface Message {
   userId: number,
   conversationId: number,
   createdAt: Date,
+  readAt?: Date,
 }
 
 export interface Conversation {
@@ -29,6 +30,6 @@ export interface Note {
 }
 
 export type WsNotification = {
-  type: 'message' | 'typing',
+  type: 'message' | 'typing' | 'mark_as_read',
   data: Message | User,
 }

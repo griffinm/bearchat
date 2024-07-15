@@ -1,69 +1,26 @@
-import { useEffect, useRef, useState } from "react"
-import { createMessage, fetchConversations, fetchMessages } from "../../utils/ApiClient";
-import { Conversation, Message } from "../../utils/types";
+import { useEffect, useRef } from "react"
 import { LoadingSpinner } from "../../components/loading-spinner/LoadingSpinner";
 import { NewMessage } from "./components/NewMessage";
 import { Messages } from "./components/Messages";
 import { useUser } from "../../providers/UserProvider";
-import { useWS } from "../../providers/wsProvider";
-const { useNavigate } = require("react-router-dom");
+import { useMessages } from "../../providers/messageProvider";
 
 export function Chat() {
-  const [loading, setLoading] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [currentConversation, setCurrentConversation] = useState<Conversation>();
-  const [messages, setMessages] = useState<Message[]>([]);
   const { user } = useUser()
-  const {
-    newMessage,
-    connected,
-  } = useWS()
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const navigate = useNavigate()
-  
-  // Check all conditions to make sure chat is ready
+  const { 
+    messages,
+    loading,
+    sendMessage,
+    participants,
+    conversation,
+  } = useMessages()   
+
   useEffect(() => {
-    if (!loading && currentConversation && !ready) {
-      setReady(true);
+    if (!loading) {
       scrollToBottom()
     }
-  }, [connected, loading, currentConversation, ready])
-
-  // Receive and append new messages to collection
-  useEffect(() => {
-    if (newMessage && currentConversation && newMessage.conversationId === currentConversation.id) {
-      // Add this message if it is not already added
-      const found = messages.find((message) => message.id === newMessage.id);
-      if (!found) {
-        setMessages([...messages, newMessage])
-        scrollToBottom()
-      }
-    }
-  }, [newMessage, currentConversation, messages])
-
-  // Initial load of conversations
-  useEffect(() => {
-    setLoading(true)
-    fetchConversations().then((response) => {
-      const firstConversation = response.data[0];
-      setCurrentConversation(firstConversation);
-      setLoading(false);
-    }).catch(() => {
-      navigate('/login')
-    })
-  }, [navigate])
-
-  // Initial load of messages
-  useEffect(() => {
-    if (!currentConversation) {
-      return
-    }
-
-    fetchMessages(currentConversation.id).then((response) => {
-      setMessages(response.data);
-      scrollToBottom()
-    })
-  }, [currentConversation])
+  }, [messages, loading])
 
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -71,19 +28,7 @@ export function Chat() {
     }, 300)
   }
 
-  const handleNewMessage = (message: string) => {
-    if (!currentConversation) {
-      return
-    }
-    
-    createMessage(message, currentConversation.id).then((response) => {
-      const message = response.data;
-      setMessages([...messages, message])
-      scrollToBottom()
-    })
-  }
-
-  if (!ready) {
+  if (loading) {
     return <LoadingSpinner />
   }
 
@@ -92,14 +37,15 @@ export function Chat() {
       <div className="">
         <Messages
           messages={messages}
-          participants={currentConversation!.users}
+          participants={participants}
           currentUser={user!}
+          conversation={conversation!}
         />
         <div ref={messagesEndRef} />
       </div>
       <div className="flex justify-center fixed bottom-0 right-0 left-0 h-[140px] bg-white">
         <div className="grow p-5 max-w-[700px]">
-          <NewMessage onSend={handleNewMessage} />
+          <NewMessage onSend={sendMessage} />
         </div>
       </div>
 

@@ -10,6 +10,10 @@ class Message < ApplicationRecord
     SendMessageJob.perform_later(self)
   end
 
+  def read?
+    self.read_at.present?
+  end
+
   def to_json
     {
       id: self.id,
