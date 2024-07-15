@@ -10,6 +10,16 @@ class MarkAsReadService
     conversation.messages.where.not(user: user).each do |m|
       m.update(read_at: Time.now)
     end
+
+    # Update other people in the convo
+    conversation.users.each do |u|
+      if u != user
+        ChatChannel.broadcast_to(u, {
+          type: 'mark_as_read',
+          data: Time.now.to_i,
+        })
+      end
+    end
   end
 
 end

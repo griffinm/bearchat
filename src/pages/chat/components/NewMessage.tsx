@@ -2,6 +2,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { IconButton } from "@mui/material";
 import { grey } from '@mui/material/colors';
 import { useState } from 'react';
+import { useMessages } from '../../../providers/messageProvider';
 
 const lightGrey = grey[700];
 
@@ -13,6 +14,7 @@ export function NewMessage({
   onSend,
 }: Props) {
   const [newMessage, setNewMessage] = useState<string>('')
+  const { setIsTyping } = useMessages()
 
   const sendMessage = () => {
     if (newMessage.trim() !== '') {
@@ -24,6 +26,8 @@ export function NewMessage({
   const onMessageKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && newMessage.trim() !== '') {
       sendMessage();
+    } else {
+      setIsTyping(true)
     }
   }
 

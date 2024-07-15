@@ -29,7 +29,12 @@ export interface Note {
   updatedAt: Date,
 }
 
+export type TypingNotificationData = {
+  userId: number,
+  conversationId: number,
+}
+
 export type WsNotification = {
   type: 'message' | 'typing' | 'mark_as_read',
-  data: Message | User,
+  data: Message | TypingNotificationData | Date,
 }

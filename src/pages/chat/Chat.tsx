@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { LoadingSpinner } from "../../components/loading-spinner/LoadingSpinner";
 import { NewMessage } from "./components/NewMessage";
 import { Messages } from "./components/Messages";
@@ -14,13 +14,18 @@ export function Chat() {
     sendMessage,
     participants,
     conversation,
+    participantTyping,
   } = useMessages()   
 
   useEffect(() => {
     if (!loading) {
       scrollToBottom()
     }
-  }, [messages, loading])
+  }, [messages, loading, participantTyping])
+
+  const otherParticipant = useMemo(() => {
+    return participants.find((participant) => participant.id !== user?.id)
+  }, [participants])
 
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -34,14 +39,21 @@ export function Chat() {
 
   return (
     <div className="flex flex-col">
-      <div className="">
+      <div className="pb-[130px]">
         <Messages
           messages={messages}
           participants={participants}
           currentUser={user!}
           conversation={conversation!}
-        />
+          />
+        {!participantTyping && (
+          <div className="p-2 text-center text-gray-500">
+            {otherParticipant?.firstName} is typing...
+          </div>
+        )}
         <div ref={messagesEndRef} />
+      </div>
+      <div>
       </div>
       <div className="flex justify-center fixed bottom-0 right-0 left-0 h-[140px] bg-white">
         <div className="grow p-5 max-w-[700px]">

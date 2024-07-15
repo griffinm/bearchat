@@ -7,7 +7,6 @@ class SendMessageJob < ApplicationJob
     # Send to any WS listeners
     conversation.users.each do |user|
       next if (user.id === message.user_id)
-      Rails.logger.info("Sending message to user #{user.id}")
       ChatChannel.broadcast_to(user, formatted_ws_message(message) )
     end
 

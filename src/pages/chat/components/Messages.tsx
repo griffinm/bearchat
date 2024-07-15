@@ -28,12 +28,12 @@ export function Messages({
     if (lastMessage) {
       markMessageAsRead(lastMessage.id, conversation.id)
     }
-  }, [sortedMessages])
+  }, [sortedMessages.length])
 
   const renderMessage = (message: Message) => {
     let isLastOfSender = false
     if (sortedMessages.length > sortedMessages.indexOf(message)) {
-      const nextMessage = sortedMessages[sortedMessages.indexOf(message) + 1]
+      const nextMessage = sortedMessages[sortedMessages.indexOf(message) - 1]
       if (nextMessage) {
         isLastOfSender = nextMessage.userId !== message.userId
       } else {
@@ -54,7 +54,7 @@ export function Messages({
 
   return (
     <div className="grow flex justify-center">
-      <div className="flex grow flex-col-reverse p-5 max-w-[700px] [overflow-anchor:auto] overflow-scroll pb-[130px]">
+      <div className="flex grow flex-col-reverse p-5 max-w-[700px] [overflow-anchor:auto] overflow-scroll">
         {sortedMessages.map((message) => renderMessage(message) )}
       </div>
     </div>
